@@ -63,6 +63,16 @@
           (have 'glue)
           (have 'plug-and-cord)
           (eq *iron-combined-cond* 0))
-            (progn (setq *iron-combined-cond* 1) '(you can now iron items- well not really)))
+            (progn (setq *iron-combined-cond* 1) '(you can now iron items- well not really.)))
     (t  
       '(you cannot combine these items yet.))))
+
+; object, location, path
+(defmacro new-object ())
+
+(defmacro new-location (loc)
+  (push *locations* loc))
+
+; find loc and push dir (list dir2 obj)
+(defmacro new-path (loc dir)
+  (while))
