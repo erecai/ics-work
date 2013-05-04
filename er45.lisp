@@ -32,7 +32,7 @@
                    (t '(the wizard awakens from his slumber and greets you warmly. 
                         he hands you the magic low-carb donut- you win! the end.))))
 
-(nconc *allowed-commands* '(help h ?))
+(nconc *allowed-commands* '(help h ? combine))
 (defun help ()
     (game-print '(allowed commands are--))
     (game-print '(look- gives description of current location.))
@@ -47,3 +47,22 @@
   (help))
 (defun ? ()
   (help))
+
+(defparameter *clothes-iron-items* '(metal-thing black-handle glue plug-and-cord))
+(defparameter *iron-combined-cond* 0)
+(nconc *objects* '(clothes-iron))
+
+(defun combine (obj1 obj2 obj3 obj4)
+  (cond 
+    ((and (member obj1 *clothes-iron-items*)
+          (member obj1 *clothes-iron-items*)
+          (member obj1 *clothes-iron-items*)
+          (member obj1 *clothes-iron-items*)
+          (have 'metal-thing)
+          (have 'black-handle)
+          (have 'glue)
+          (have 'plug-and-cord)
+          (eq *iron-combined-cond* 0))
+            (progn (setq *iron-combined-cond* 1) '(you can now iron items- well not really)))
+    (t  
+      '(you cannot combine these items yet.))))
