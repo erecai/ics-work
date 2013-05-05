@@ -79,36 +79,69 @@
         '(object must be a symbol.))
       ((not (symbolp ,loc))
         '(location must be a symbol.))
-      ((not (member ,obj *objects*)) 
+      ((member ,obj *objects*) 
         '(object already exists.))
       ((not (assoc ,loc *nodes*)) ; searches the list for loc in each car
         '(location does not exist.))
       (t  
         (push ,obj *objects*)
-        (push (list ,obj ,loc) *object-locations*)))))
+        (push (list ,obj ,loc) *object-locations*))))
 
 ; possibly update a location's description
 ; check if location already exists
 ; simply needs a name and description
-; (list locn (list desc))
+; (list locn (list desc)) - using this as parameter
 ; locn (list desc)
 (defmacro new-location (loc)
-  '(cond
-      ((not (listp loc))
+  `(cond
+      ((not (listp ,loc))
         '(loc must be a list.))
-      ((not (symbol (car ,loc)))
+      ((not (symbolp (car ,loc)))
         '(car of list must be a symbol.))
       ((assoc (car ,loc) *nodes*)
         '(location already exists.))
-      ((listp (cdar ,loc))
+      ((not (listp (cadr ,loc)))
         '(cdar of list must be a list.))
       ; could test if desc list are symbols
       (t
-        (push *locations* loc))))
+        (push *notes* loc))))
 
+
+(defparameter *current-loc* *edges*)
 ; path to current room from current room
 ; multiple paths to the same room from one room
 ; check car of dir if possible node to car of *nodes* until nil
-; find loc and push dir (list dir2 obj)
+; find loc and push dir (list loc2 dir2 obj)
 (defmacro new-path (loc dir)
-  (while))
+  `(cond
+      ((not (symbolp ,loc))
+        '(loc must be a symbol.))
+      ((not (listp ,dir))
+        '(dir must be a list.))
+      ; doesn't check if list elements are appropriate types
+      ; assume they are all symbols
+      ; list size must be 3
+      ((not (assoc ,loc *nodes*))
+        '(location does not exist.))
+      ((not (assoc (car ,dir) *nodes*))  ; checks if loc2 is a location
+        '(location2 does not exist.))
+      (t
+        ((while (not (eq ,loc (car *current-loc*)))  ; sets current-loc to appropriate loc.
+          (setf *current-loc* (cdr *edges*)))
+         (nconc *current-loc* ,dir)                  ; adds path to appropriate loc.
+         '(path created from loc.)))))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
