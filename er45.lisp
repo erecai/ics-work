@@ -41,8 +41,8 @@
     (game-print '(inventory- lists objects currently in the inventory.))
     (game-print '(weld chain bucket attic- welds the chain to the bucket in the attic.))
     (game-print '(dunk bucket well garden- fills the bucket with water in the garden.))
-    (game-print '(splash bucket wizard living-room- splash the wizard in the living room.))
-    (game-print '(combine metal-thing black-handle glue plug-and-cord- combines these item into a clothes iron.)))
+    (game-print '(splash bucket wizard living-room- splashes the wizard in the living room.))
+    (game-print '(combine metal-thing black-handle glue plug-and-cord- combines these items into a clothes iron.)))
 (defun h ()
   (help))
 (defun ? ()
@@ -63,16 +63,52 @@
           (have 'glue)
           (have 'plug-and-cord)
           (eq *iron-combined-cond* 0))
-            (progn (setq *iron-combined-cond* 1) '(you can now iron items- well not really.)))
+            (progn (setq *iron-combined-cond* 1) '(you can now iron items- if you had anything to iron which you dont.)))
     (t  
       '(you cannot combine these items yet.))))
 
 ; object, location, path
-(defmacro new-object ())
 
+
+; needs location
+; check if object already exists
+; check if location exists
+(defmacro new-object (obj loc)
+    `(cond
+      ((not (symbolp ,obj))
+        '(object must be a symbol.))
+      ((not (symbolp ,loc))
+        '(location must be a symbol.))
+      ((not (member ,obj *objects*)) 
+        '(object already exists.))
+      ((not (assoc ,loc *nodes*)) ; searches the list for loc in each car
+        '(location does not exist.))
+      (t  
+        (push ,obj *objects*)
+        (push (list ,obj ,loc) *object-locations*)))))
+
+; possibly update a location's description
+; check if location already exists
+; simply needs a name and description
+; (list locn (list desc))
+; locn (list desc)
 (defmacro new-location (loc)
-  (push *locations* loc))
+  '(cond
+      ((not (listp loc))
+        '(loc must be a list.))
+      ((not (symbol (car ,loc)))
+        '(car of list must be a symbol.))
+      ((assoc (car ,loc) *nodes*)
+        '(location already exists.))
+      ((listp (cdar ,loc))
+        '(cdar of list must be a list.))
+      ; could test if desc list are symbols
+      (t
+        (push *locations* loc))))
 
+; path to current room from current room
+; multiple paths to the same room from one room
+; check car of dir if possible node to car of *nodes* until nil
 ; find loc and push dir (list dir2 obj)
 (defmacro new-path (loc dir)
   (while))
