@@ -104,10 +104,13 @@
         '(cdar of list must be a list.))
       ; could test if desc list are symbols
       (t
-        (push *notes* loc))))
+        (push ,loc *nodes*))))
 
+(defparameter *a* '(dragon (fun land.)))
+(defparameter *b* '(elevator down stairs))
 
-(defparameter *current-loc* *edges*)
+; how to refrence to a certain cell
+(defparameter *current-loc* *edges*) ; a copy or pointer ot what?
 ; path to current room from current room
 ; multiple paths to the same room from one room
 ; check car of dir if possible node to car of *nodes* until nil
@@ -126,10 +129,16 @@
       ((not (assoc (car ,dir) *nodes*))  ; checks if loc2 is a location
         '(location2 does not exist.))
       (t
-        ((while (not (eq ,loc (car *current-loc*)))  ; sets current-loc to appropriate loc.
-          (setf *current-loc* (cdr *edges*)))
-         (nconc *current-loc* ,dir)                  ; adds path to appropriate loc.
-         '(path created from loc.)))))
+        (cond
+          ((not (assoc ,loc *edges*))
+            (push '(dragon ,dir) *current-loc*)             ; how to not apply quote
+            '(path created from loc.))
+          ((loop while (not (eq ,loc (car *current-loc*)))  ; sets current-loc to appropriate loc.
+            do (setf *current-loc* (cdr *edges*)))
+          (nconc *current-loc* ,dir)                  ; adds path to appropriate loc.
+           '(path created from loc.)))
+      )
+    ))
 
 
 
