@@ -108,6 +108,7 @@
 
 (defparameter *a* '(dragon (fun land.)))
 (defparameter *b* '(elevator down stairs))
+(defparamtere *c* '(dragon up cloud))
 
 ; how to refrence to a certain cell
 (defparameter *current-loc* *edges*) ; a copy or pointer ot what?
@@ -131,12 +132,14 @@
       (t
         (cond
           ((not (assoc ,loc *edges*))
-            (push '(dragon ,dir) *current-loc*)             ; how to not apply quote
+            (push (list ,loc ,dir) *edges*)
             '(path created from loc.))
-          ((loop while (not (eq ,loc (car *current-loc*)))  ; sets current-loc to appropriate loc.
-            do (setf *current-loc* (cdr *edges*)))
-          (nconc *current-loc* ,dir)                  ; adds path to appropriate loc.
-           '(path created from loc.)))
+          ;((loop while (not (eq ,loc (car *current-loc*)))  ; sets current-loc to appropriate loc.
+          ;  do (setf *current-loc* (cdr *edges*))))
+          ; do via assoc instead
+          (t
+            ((nconc (assoc ,loc *edges*) ',dir)                  ; adds path to appropriate loc.
+            '(path created from loc.))))
       )
     ))
 
