@@ -32,6 +32,10 @@
                    (t '(the wizard awakens from his slumber and greets you warmly. 
                         he hands you the magic low-carb donut- you win! the end.))))
 
+;;; ===
+;;; Commands, and Macros
+;;; ===
+
 (nconc *allowed-commands* '(help h ? combine))
 (defun help ()
     (game-print '(allowed commands are--))
@@ -68,7 +72,6 @@
       '(you cannot combine these items yet.))))
 
 ; object, location, path
-
 
 ; needs location
 ; check if object already exists
@@ -111,7 +114,7 @@
 ; (new-path 'dragon *b*)
 (defparameter *b* '(attic down stairs))
 ; (new-path 'attic *c*)
-(defparameter *c* '(dragon up cloud))qui
+(defparameter *c* '(dragon up cloud))
 
 ; path to current room from current room
 ; multiple paths to the same room from one room
