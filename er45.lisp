@@ -106,12 +106,13 @@
       (t
         (push ,loc *nodes*))))
 
+; (new-location *a*)
 (defparameter *a* '(dragon (fun land.)))
-(defparameter *b* '(elevator down stairs))
-(defparamtere *c* '(dragon up cloud))
+; (new-path 'dragon *b*)
+(defparameter *b* '(attic down stairs))
+; (new-path 'attic *c*)
+(defparameter *c* '(dragon up cloud))qui
 
-; how to refrence to a certain cell
-(defparameter *current-loc* *edges*) ; a copy or pointer ot what?
 ; path to current room from current room
 ; multiple paths to the same room from one room
 ; check car of dir if possible node to car of *nodes* until nil
